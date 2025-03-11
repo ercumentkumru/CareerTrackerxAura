@@ -43,6 +43,13 @@ export default function Home() {
   const periodPoints = currentPeriodWeeks.reduce((sum, week) => sum + week.points, 0);
   const { currentLevel, nextLevel, remainingPoints, message } = calculateCareerLevel(periodPoints);
 
+  // Find the last week that contributed to current level
+  const lastAchievementWeek = currentLevel ? Math.max(
+    ...currentPeriodWeeks
+      .filter(w => w.points > 0)
+      .map(w => w.weekNumber)
+  ) : null;
+
   // Handle point input optimized
   const handlePointInput = useCallback((weekNumber: number, value: string) => {
     // Only allow numbers
@@ -86,18 +93,18 @@ export default function Home() {
             {Array.from({ length: 80 }, (_, i) => i + 1).map((weekNumber) => {
               const week = weeks.find((w) => w.weekNumber === weekNumber);
               const isInCurrentPeriod = weekNumber >= currentPeriodStart && weekNumber < currentPeriodStart + 26;
-              const isAchievementWeek = currentLevel && week?.points && week.points > 0;
+              const isLastAchievementWeek = weekNumber === lastAchievementWeek;
 
               return (
                 <Card 
                   key={weekNumber}
                   className={`flex-shrink-0 w-16 transition-all duration-300
                     ${isInCurrentPeriod ? 'border-blue-500' : 'border-gray-100'}
-                    ${isAchievementWeek && isInCurrentPeriod ? levelColors[currentLevel] : 'bg-white hover:bg-gray-50'}
+                    ${isLastAchievementWeek && currentLevel ? levelColors[currentLevel] : 'bg-white hover:bg-gray-50'}
                     shadow-sm hover:shadow-md transform hover:-translate-y-0.5`}
                 >
                   <CardContent className="p-1 text-center">
-                    <div className="text-xs font-medium text-gray-600 mb-1">
+                    <div className={`text-xs font-medium mb-1 ${isLastAchievementWeek ? 'text-white' : 'text-gray-600'}`}>
                       Hafta {weekNumber}
                     </div>
                     <Input
@@ -106,7 +113,8 @@ export default function Home() {
                       pattern="[0-9]*"
                       value={inputValues[weekNumber] || week?.points || ''}
                       onChange={(e) => handlePointInput(weekNumber, e.target.value)}
-                      className="w-full text-center p-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`w-full text-center p-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+                        ${isLastAchievementWeek ? 'bg-white/90' : ''}`}
                       placeholder="0"
                     />
                   </CardContent>
@@ -153,7 +161,7 @@ export default function Home() {
             className={`
               ${bgColor} transition-all duration-300 transform
               hover:scale-105 hover:shadow-xl border-none
-              ${currentLevel === level ? 'ring-4 ring-blue-500 scale-105 shadow-lg animate-pulse' : ''}
+              ${currentLevel === level ? 'ring-4 ring-blue-500 scale-105 shadow-lg animate-pulse-slow' : ''}
             `}
           >
             <CardContent className="p-4 text-center">
