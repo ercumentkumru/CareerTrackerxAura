@@ -8,6 +8,21 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-slate-100 text-foreground min-h-screen;
+  }
+}
+
+@layer components {
+  .neumorphic {
+    @apply shadow-[5px_5px_10px_#b8b9be,-5px_-5px_10px_#ffffff] bg-slate-100;
+  }
+
+  .neumorphic-inset {
+    @apply shadow-[inset_5px_5px_10px_#b8b9be,inset_-5px_-5px_10px_#ffffff] bg-slate-100;
+  }
+
+  .week-input {
+    @apply w-full text-center py-2 rounded-lg focus:outline-none neumorphic-inset 
+    transition-all duration-200 focus:shadow-[inset_3px_3px_6px_#b8b9be,inset_-3px_-3px_6px_#ffffff];
   }
 }

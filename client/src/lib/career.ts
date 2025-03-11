@@ -7,11 +7,10 @@ export function calculateCareerLevel(totalPoints: number): {
   message: string;
 } {
   const levels = Object.entries(careerLevels) as [CareerLevel, number][];
-  
-  // Find current and next level
+
   let currentLevel: CareerLevel | null = null;
   let nextLevel: CareerLevel | null = null;
-  
+
   for (let i = 0; i < levels.length; i++) {
     if (totalPoints >= levels[i][1]) {
       currentLevel = levels[i][0];
@@ -24,22 +23,17 @@ export function calculateCareerLevel(totalPoints: number): {
     }
   }
 
-  // Calculate remaining points for next level
   const remainingPoints = nextLevel 
     ? careerLevels[nextLevel] - totalPoints
     : 0;
 
-  // Generate message
   let message = '';
-  if (currentLevel) {
-    message = `Tebrikler ${currentLevel} oldunuz!`;
-    if (nextLevel) {
-      message += ` Haydi şimdi ${nextLevel} olma vakti, kalan puan ${remainingPoints}! Yapabilirsin!`;
-    } else {
-      message += ' En yüksek seviyeye ulaştınız!';
-    }
-  } else if (nextLevel) {
+  if (!currentLevel && nextLevel) {
     message = `Haydi ${nextLevel} olmak için ${remainingPoints} puan daha topla! Yapabilirsin!`;
+  } else if (currentLevel && nextLevel) {
+    message = `Haydi şimdi ${nextLevel} olma vakti, kalan puan ${remainingPoints}! Yapabilirsin!`;
+  } else if (currentLevel) {
+    message = 'En yüksek seviyeye ulaştınız! Muhteşem bir başarı!';
   }
 
   return {
@@ -51,14 +45,14 @@ export function calculateCareerLevel(totalPoints: number): {
 }
 
 export const levelColors = {
-  JADE: 'bg-emerald-100',
-  PEARL: 'bg-slate-100',
-  SAPPHIRE: 'bg-blue-100',
-  RUBY: 'bg-red-100',
-  EMERALD: 'bg-emerald-300',
-  DIAMOND: 'bg-cyan-100',
-  BLUE_DIAMOND: 'bg-blue-300',
-  RED_DIAMOND: 'bg-red-300',
-  BLACK_DIAMOND: 'bg-gray-900',
-  AMBASSADOR: 'bg-purple-300'
+  JADE: 'bg-emerald-100/50',
+  PEARL: 'bg-slate-100/50',
+  SAPPHIRE: 'bg-blue-100/50',
+  RUBY: 'bg-red-100/50',
+  EMERALD: 'bg-emerald-200/50',
+  DIAMOND: 'bg-cyan-100/50',
+  BLUE_DIAMOND: 'bg-blue-200/50',
+  RED_DIAMOND: 'bg-red-200/50',
+  BLACK_DIAMOND: 'bg-gray-800/50 text-white',
+  AMBASSADOR: 'bg-purple-200/50'
 } as const;
