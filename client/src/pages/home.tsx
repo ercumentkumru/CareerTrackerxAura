@@ -70,14 +70,14 @@ export default function Home() {
         HAYDI BAŞLAYALIM!
       </h1>
 
-      {/* Kariyer Durumu */}
-      {currentLevel && (
-        <div className="text-center mb-8">
-          <div className="text-xl font-semibold text-emerald-600">
+      {/* Kariyer Durumu - Sabit yükseklik */}
+      <div className="h-16 mb-8 flex items-center justify-center">
+        {currentLevel && (
+          <div className="text-xl font-semibold text-emerald-600 animate-fade-in">
             {`Tebrikler ${currentLevel} oldunuz!`}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Cetvel */}
       <div className="relative w-full max-w-6xl mx-auto overflow-hidden mb-8">
@@ -91,9 +91,10 @@ export default function Home() {
               return (
                 <Card 
                   key={weekNumber}
-                  className={`flex-shrink-0 w-16 transition-colors duration-300 bg-white shadow-sm border
+                  className={`flex-shrink-0 w-16 transition-all duration-300
                     ${isInCurrentPeriod ? 'border-blue-500' : 'border-gray-100'}
-                    ${isAchievementWeek && isInCurrentPeriod ? levelColors[currentLevel] : ''}`}
+                    ${isAchievementWeek && isInCurrentPeriod ? levelColors[currentLevel] : 'bg-white hover:bg-gray-50'}
+                    shadow-sm hover:shadow-md transform hover:-translate-y-0.5`}
                 >
                   <CardContent className="p-1 text-center">
                     <div className="text-xs font-medium text-gray-600 mb-1">
@@ -116,12 +117,12 @@ export default function Home() {
         </div>
 
         {/* Durum ve Navigation */}
-        <div className="text-center mt-4 space-y-4">
+        <div className="text-center mt-6 space-y-4">
           <div className="text-xl font-bold text-gray-800">
             26 haftalık toplam puan: {periodPoints}
           </div>
           {message && (
-            <div className="text-lg text-blue-600">
+            <div className="text-lg text-blue-600 font-medium">
               {message}
             </div>
           )}
@@ -129,16 +130,14 @@ export default function Home() {
             <Button 
               onClick={() => shiftPeriod(-1)} 
               disabled={currentPeriodStart <= 1}
-              variant="outline"
-              className="bg-white hover:bg-gray-50"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300"
             >
               ← Geri
             </Button>
             <Button 
               onClick={() => shiftPeriod(1)}
               disabled={currentPeriodStart >= 55}
-              variant="outline"
-              className="bg-white hover:bg-gray-50"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300"
             >
               İleri →
             </Button>
@@ -152,13 +151,14 @@ export default function Home() {
           <Card 
             key={level} 
             className={`
-              ${bgColor} border-none shadow-sm transition-all duration-300
-              ${currentLevel === level ? 'ring-2 ring-blue-500 scale-105' : ''}
+              ${bgColor} transition-all duration-300 transform
+              hover:scale-105 hover:shadow-xl border-none
+              ${currentLevel === level ? 'ring-4 ring-blue-500 scale-105 shadow-lg animate-pulse' : ''}
             `}
           >
             <CardContent className="p-4 text-center">
               <div className="font-semibold">{level}</div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm opacity-90">
                 {level === 'JADE' ? '1,500 Puan' :
                  level === 'PEARL' ? '4,500 Puan' :
                  level === 'SAPPHIRE' ? '9,000 Puan' :

@@ -45,14 +45,14 @@ export function calculateCareerLevel(totalPoints: number): {
 }
 
 export const levelColors = {
-  JADE: 'bg-gradient-to-br from-emerald-50 to-emerald-100',
-  PEARL: 'bg-gradient-to-br from-slate-50 to-slate-100',
-  SAPPHIRE: 'bg-gradient-to-br from-blue-50 to-blue-100',
-  RUBY: 'bg-gradient-to-br from-red-50 to-red-100',
-  EMERALD: 'bg-gradient-to-br from-green-50 to-green-100',
-  DIAMOND: 'bg-gradient-to-br from-cyan-50 to-cyan-100',
-  BLUE_DIAMOND: 'bg-gradient-to-br from-indigo-50 to-indigo-100',
-  RED_DIAMOND: 'bg-gradient-to-br from-rose-50 to-rose-100',
-  BLACK_DIAMOND: 'bg-gradient-to-br from-gray-800 to-gray-900 text-white',
-  AMBASSADOR: 'bg-gradient-to-br from-purple-50 to-purple-100'
+  JADE: 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white',
+  PEARL: 'bg-gradient-to-r from-gray-100 to-gray-300',
+  SAPPHIRE: 'bg-gradient-to-r from-blue-400 to-indigo-500 text-white',
+  RUBY: 'bg-gradient-to-r from-red-400 to-pink-500 text-white',
+  EMERALD: 'bg-gradient-to-r from-green-400 to-emerald-500 text-white',
+  DIAMOND: 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white',
+  BLUE_DIAMOND: 'bg-gradient-to-r from-indigo-400 to-violet-500 text-white',
+  RED_DIAMOND: 'bg-gradient-to-r from-rose-400 to-red-500 text-white',
+  BLACK_DIAMOND: 'bg-gradient-to-r from-gray-800 to-gray-900 text-white',
+  AMBASSADOR: 'bg-gradient-to-r from-purple-400 to-fuchsia-500 text-white'
 } as const;
