@@ -11,7 +11,6 @@ import { calculateCareerLevel, levelColors } from "@/lib/career";
 export default function Home() {
   const { toast } = useToast();
   const [currentPeriodStart, setCurrentPeriodStart] = useState(1);
-  const [totalWeeks] = useState(100);
 
   // Fetch all weeks
   const { data: weeks = [] } = useQuery<Week[]>({
@@ -53,86 +52,89 @@ export default function Home() {
 
   // Shift period window
   const shiftPeriod = useCallback((direction: 1 | -1) => {
-    const newStart = currentPeriodStart + direction;
-    if (newStart >= 1 && newStart <= totalWeeks - 25) {
-      setCurrentPeriodStart(newStart);
-    }
-  }, [currentPeriodStart, totalWeeks]);
+    setCurrentPeriodStart(prev => Math.max(1, prev + direction));
+  }, []);
 
   return (
-    <div className="container mx-auto py-8 px-4 space-y-8">
-      <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text mb-8">
-        Kariyer Takip Takvimi
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
+        HAYDI BAŞLAYALIM!
       </h1>
 
-      <Card className="neumorphic border-none">
-        <CardContent className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
+      <div className="flex flex-col items-center gap-8">
+        {/* Kariyer Durumu */}
+        <Card className="w-full max-w-2xl bg-white shadow-sm border-none">
+          <CardContent className="p-6">
+            <div className="flex flex-col items-center gap-3">
+              <div className="text-2xl font-bold text-gray-800">
+                26 haftalık toplam puan: {periodPoints}
+              </div>
+              {currentLevel && (
+                <div className="text-xl font-semibold text-emerald-600">
+                  {`Tebrikler ${currentLevel} oldunuz!`}
+                </div>
+              )}
+              {message && (
+                <div className="text-lg text-blue-600">
+                  {message}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Cetvel */}
+        <div className="relative w-full max-w-6xl">
+          <div className="flex items-center">
             <Button 
               onClick={() => shiftPeriod(-1)} 
               disabled={currentPeriodStart <= 1}
-              className="neumorphic hover:shadow-[3px_3px_6px_#b8b9be,-3px_-3px_6px_#ffffff] border-none"
+              variant="ghost"
+              className="text-gray-600"
             >
-              ← Önceki
+              ← Geri
             </Button>
-            <div className="text-lg font-semibold">
-              {currentPeriodStart}. - {currentPeriodStart + 25}. Haftalar
+
+            <div className="flex-1 overflow-x-auto">
+              <div className="flex gap-2 transition-transform duration-300 ease-in-out">
+                {Array.from({ length: 26 }, (_, i) => i + currentPeriodStart).map((weekNumber) => {
+                  const week = weeks.find((w) => w.weekNumber === weekNumber);
+                  const isAchievementWeek = currentLevel && week?.points && week.points > 0;
+
+                  return (
+                    <Card 
+                      key={weekNumber}
+                      className={`flex-shrink-0 w-20 transition-colors duration-300 bg-white shadow-sm border-none
+                        ${isAchievementWeek ? levelColors[currentLevel] : ''}`}
+                    >
+                      <CardContent className="p-2 text-center">
+                        <div className="text-sm font-medium text-gray-600 mb-1">
+                          Hafta {weekNumber}
+                        </div>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={week?.points || ''}
+                          onChange={(e) => handlePointInput(weekNumber, e.target.value)}
+                          className="w-full text-center p-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="0"
+                        />
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
+
             <Button 
               onClick={() => shiftPeriod(1)}
-              disabled={currentPeriodStart >= totalWeeks - 25}
-              className="neumorphic hover:shadow-[3px_3px_6px_#b8b9be,-3px_-3px_6px_#ffffff] border-none"
+              variant="ghost"
+              className="text-gray-600"
             >
-              Sonraki →
+              İleri →
             </Button>
           </div>
-
-          <div className="text-center space-y-3 p-4 rounded-lg neumorphic-inset">
-            <div className="text-2xl font-bold">
-              Toplam Puan: {periodPoints}
-            </div>
-            {currentLevel && (
-              <div className="text-xl font-semibold text-emerald-600">
-                {`Tebrikler ${currentLevel} oldunuz!`}
-              </div>
-            )}
-            {message && (
-              <div className="text-lg text-blue-600">
-                {message}
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-        {Array.from({ length: 26 }, (_, i) => i + currentPeriodStart).map((weekNumber) => {
-          const week = weeks.find((w) => w.weekNumber === weekNumber);
-          const isAchievementWeek = currentLevel && week?.points && week.points > 0;
-
-          return (
-            <Card 
-              key={weekNumber}
-              className={`neumorphic border-none transition-all duration-300 ${
-                isAchievementWeek ? levelColors[currentLevel] : ''
-              }`}
-            >
-              <CardContent className="p-4 space-y-2">
-                <div className="text-sm font-medium text-center">
-                  Hafta {weekNumber}
-                </div>
-                <Input
-                  type="number"
-                  min="0"
-                  value={week?.points || ''}
-                  onChange={(e) => handlePointInput(weekNumber, e.target.value)}
-                  className="week-input"
-                  placeholder="Puan"
-                />
-              </CardContent>
-            </Card>
-          );
-        })}
+        </div>
       </div>
     </div>
   );

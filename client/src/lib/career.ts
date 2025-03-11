@@ -45,14 +45,14 @@ export function calculateCareerLevel(totalPoints: number): {
 }
 
 export const levelColors = {
-  JADE: 'bg-emerald-100/50',
-  PEARL: 'bg-slate-100/50',
-  SAPPHIRE: 'bg-blue-100/50',
-  RUBY: 'bg-red-100/50',
-  EMERALD: 'bg-emerald-200/50',
-  DIAMOND: 'bg-cyan-100/50',
-  BLUE_DIAMOND: 'bg-blue-200/50',
-  RED_DIAMOND: 'bg-red-200/50',
-  BLACK_DIAMOND: 'bg-gray-800/50 text-white',
-  AMBASSADOR: 'bg-purple-200/50'
+  JADE: 'bg-emerald-50',
+  PEARL: 'bg-gray-50',
+  SAPPHIRE: 'bg-blue-50',
+  RUBY: 'bg-red-50',
+  EMERALD: 'bg-green-50',
+  DIAMOND: 'bg-cyan-50',
+  BLUE_DIAMOND: 'bg-indigo-50',
+  RED_DIAMOND: 'bg-rose-50',
+  BLACK_DIAMOND: 'bg-gray-900 text-white',
+  AMBASSADOR: 'bg-purple-50'
 } as const;
